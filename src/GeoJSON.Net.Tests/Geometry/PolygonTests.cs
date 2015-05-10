@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -23,7 +25,18 @@ namespace GeoJSON.Net.Tests.Geometry
             });
 
             var expectedJson = GetExpectedJson();
-            var actualJson = JsonConvert.SerializeObject(polygon);
+
+            string actualJson;
+
+            var stringBuilder = new StringBuilder();
+            using (var stringWriter = new StringWriter(stringBuilder))
+            using (var jsonTextWriter = new JsonTextWriter(stringWriter))
+            {
+                var serializer = new JsonSerializer();
+                serializer.Serialize(jsonTextWriter, polygon);
+                
+                actualJson = stringBuilder.ToString();
+            }
 
             JsonAssert.AreEqual(expectedJson, actualJson);
         }

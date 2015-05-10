@@ -8,10 +8,8 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
-using GeoJSON.Net.Exceptions;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace GeoJSON.Net.Converters
 {
@@ -44,7 +42,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            double[] coordinates = null;
+            double[] coordinates;
 
             try
             {

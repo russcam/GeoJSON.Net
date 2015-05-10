@@ -1,34 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeoJSON.Net.Exceptions;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
-    /// 
     /// </summary>
     public class MultiPointConverter : JsonConverter
     {
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override bool CanConvert(Type objectType)
         {
-            var points = (List<Point>)value;
-
-            if (points.Any())
-            {
-                var converter = new PointConverter();
-
-                writer.WriteStartArray();
-
-                foreach (var point in points)
-                {
-                    converter.WriteJson(writer, point.Coordinates, serializer);
-                }
-
-                writer.WriteEndArray();
-            }
+            return objectType == typeof(MultiPoint);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -55,13 +39,28 @@ namespace GeoJSON.Net.Converters
             }
             catch (Exception ex)
             {
-                throw new ParsingException("Could not parse GeoJSON Response. (Latitude or Longitude missing from Point geometry?)", ex);
+                throw new JsonReaderException(
+                    "Could not parse GeoJSON Response. (Latitude or Longitude missing from Point geometry?)", ex);
             }
         }
 
-        public override bool CanConvert(Type objectType)
+        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            return objectType == typeof(MultiPoint);
+            var points = (List<Point>)value;
+
+            if (points.Any())
+            {
+                var converter = new PointConverter();
+
+                writer.WriteStartArray();
+
+                foreach (var point in points)
+                {
+                    converter.WriteJson(writer, point.Coordinates, serializer);
+                }
+
+                writer.WriteEndArray();
+            }
         }
     }
 }

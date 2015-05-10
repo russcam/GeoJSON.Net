@@ -88,5 +88,86 @@ namespace GeoJSON.Net.Feature
         /// <value>The properties.</value>
         [JsonProperty(PropertyName = "properties", Required = Required.AllowNull)]
         public Dictionary<string, object> Properties { get; private set; }
+
+        /// <summary>
+        ///     Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///     <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((Feature)obj);
+        }
+
+        /// <summary>
+        ///     Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        ///     A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+        /// </returns>
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Id != null ? Id.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Geometry != null ? Geometry.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Properties != null ? Properties.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
+
+        /// <summary>
+        ///     Implements the operator ==.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>
+        ///     The result of the operator.
+        /// </returns>
+        public static bool operator ==(Feature left, Feature right)
+        {
+            return Equals(left, right);
+        }
+
+        /// <summary>
+        ///     Implements the operator !=.
+        /// </summary>
+        /// <param name="left">The left.</param>
+        /// <param name="right">The right.</param>
+        /// <returns>
+        ///     The result of the operator.
+        /// </returns>
+        public static bool operator !=(Feature left, Feature right)
+        {
+            return !Equals(left, right);
+        }
+
+        /// <summary>
+        ///     Equalses the specified other.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        /// <returns></returns>
+        protected bool Equals(Feature other)
+        {
+            return base.Equals(other) &&
+                   string.Equals(Id, other.Id) &&
+                   Equals(Geometry, other.Geometry) &&
+                   new DictionaryComparer().Equals(Properties, other.Properties);
+        }
     }
 }

@@ -56,6 +56,7 @@
     <Compile Include="CoordinateReferenceSystem\ICRSObject.cs" />
     <Compile Include="CoordinateReferenceSystem\NamedCRS.cs" />
     <Compile Include="CoordinateReferenceSystem\UnspecifiedCRS.cs" />
+    <Compile Include="DictionaryComparer.cs" />
     <Compile Include="DoubleTenDecimalPlaceComparer.cs" />
     <Compile Include="GeoJSONObject.cs" />
     <Compile Include="Geometry\GeometryCollection.cs" />
@@ -66,7 +67,6 @@
     <Compile Include="Geometry\MultiPoint.cs" />
     <Compile Include="GeoJSONObjectType.cs" />
     <Compile Include="Geometry\GeographicPosition.cs" />
-    <Compile Include="Exceptions\ParsingException.cs" />
     <Compile Include="Feature\Feature.cs" />
     <Compile Include="Feature\FeatureCollection.cs" />
     <Compile Include="Geometry\IGeometryObject.cs" />
